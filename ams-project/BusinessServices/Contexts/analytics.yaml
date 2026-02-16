@@ -1,0 +1,28 @@
+# Analytics Context Fragment
+
+metadata:
+  name: Analytics
+  description: Analytics bounded context services
+
+services:
+  analytics-web:
+    image: amssolution/analytics-web:linux-v3.1.0-pre
+    containerName: analytics-web
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      NEXT_PUBLIC_API_BASE_URL: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${BFF_PORT}
+      BFF_INTERNAL_URL: http://web-bff:8080
+    networks:
+      - ams-project-backend
+    restart: unless-stopped
+    healthCheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
+
+networks:
+  ams-project-backend:
+    external: true

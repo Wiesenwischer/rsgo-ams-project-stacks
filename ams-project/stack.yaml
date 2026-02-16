@@ -1,0 +1,207 @@
+# ams.project ReadyStackGo Manifest
+# Multi-Stack Product for ams Project Management System
+
+metadata:
+  name: ams.project
+  productId: com.ams-erp.project
+  description: Enterprise Project Management System with Infrastructure, Platform and Business Services
+  productVersion: "3.1.0-pre"
+  author: ams solution GmbH
+  category: Enterprise
+  tags:
+    - ams
+    - project-management
+    - enterprise
+    - microservices
+
+sharedVariables:
+  # Network Configuration
+  AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP:
+    label: External DNS/IP
+    description: External DNS name or IP for accessing services
+    type: String
+    default: host.docker.internal
+    required: true
+    group: Network
+
+  IDENTITY_SERVER_PORT:
+    label: Identity Server Port
+    description: External port for IdentityServer (Authentication Authority)
+    type: Number
+    default: "7614"
+    group: Network
+
+  BFF_PORT:
+    label: BFF Port
+    description: External port for Backend-for-Frontend
+    type: Number
+    default: "5000"
+    group: Network
+
+  # Database Configuration
+  AMS_DB:
+    label: ams Database Connection
+    description: SQL Server connection string for ams database
+    type: SqlServerConnectionString
+    required: true
+    group: Database
+
+  # Environment Configuration
+  ASPNETCORE_ENVIRONMENT:
+    label: ASP.NET Core Environment
+    description: Runtime environment for ASP.NET Core services
+    type: Select
+    options:
+      - value: Development
+        label: Development
+      - value: Staging
+        label: Staging
+      - value: Production
+        label: Production
+    default: Production
+    group: General
+
+  NODE_ENV:
+    label: Node Environment
+    description: Node.js environment for frontend services
+    type: Select
+    options:
+      - value: development
+        label: Development
+      - value: production
+        label: Production
+    default: production
+    group: General
+
+  CULTURE_CODE:
+    label: Culture Code
+    description: Default culture code for localization
+    type: String
+    default: de-DE
+    group: General
+
+  # Logging
+  LOG_LEVEL:
+    label: Log Level
+    description: Minimum log level for Serilog
+    type: Select
+    options:
+      - value: Verbose
+        label: Verbose
+      - value: Debug
+        label: Debug
+      - value: Information
+        label: Information
+      - value: Warning
+        label: Warning
+      - value: Error
+        label: Error
+      - value: Fatal
+        label: Fatal
+    default: Fatal
+    group: Logging
+
+  # Advanced
+  SERVICE_BUS_TIME_TO_WAIT_BEFORE_TRIGGERING_CIRCUIT_BREAKER:
+    label: Service Bus Circuit Breaker Timeout
+    description: Time in seconds before triggering circuit breaker
+    type: Number
+    default: "120"
+    group: Advanced
+
+  EXIT_ON_CRITICAL_ERROR:
+    label: Exit on Critical Error
+    description: Whether services should exit on critical errors
+    type: Boolean
+    default: "false"
+    group: Advanced
+
+  # Infrastructure Connections (previously in business-services stack)
+  EVENTSTORE_DB:
+    label: EventStore Connection
+    description: EventStoreDB connection string
+    type: EventStoreConnectionString
+    default: "esdb://admin:changeit@eventstore-db:2113?tls=false&tlsVerifyCert=false"
+    group: EventStore
+
+  REDIS_CONNECTION:
+    label: Redis Connection
+    description: Redis connection string
+    type: String
+    default: cachedata:6379
+    group: Cache
+
+  # Service Ports
+  HEALTH_MONITOR_PORT:
+    label: Health Monitor Port
+    description: Port for Health Monitor UI
+    type: Port
+    default: "5100"
+    group: Monitoring
+
+  PUBLIC_API_PORT:
+    label: Public API Port
+    description: Port for Public Project API
+    type: Port
+    default: "7716"
+    group: Network
+
+  PROJECT_IMPORT_PORT:
+    label: Project Import Port
+    description: Port for Project Import API
+    type: Port
+    default: "7717"
+    group: Network
+
+# Maintenance Observer - watches for maintenance mode flag in database
+# When ams.MaintenanceMode = 1, services without rsgo.maintenance: ignore label are stopped
+maintenanceObserver:
+  type: sqlExtendedProperty
+  connectionName: AMS_DB
+  propertyName: ams.MaintenanceMode
+  maintenanceValue: "1"
+  normalValue: "0"
+  pollingInterval: 30s
+
+stacks:
+  # Core Stacks
+  infrastructure:
+    include: Infrastructure/infrastructure.yaml
+  platform:
+    include: Platform/platform.yaml
+
+  # Business Context Stacks (per bounded context for granular CI/CD deployment)
+  projectmanagement:
+    include: BusinessServices/Contexts/projectmanagement.yaml
+  discussions:
+    include: BusinessServices/Contexts/discussions.yaml
+  memo:
+    include: BusinessServices/Contexts/memo.yaml
+  salesorders:
+    include: BusinessServices/Contexts/salesorders.yaml
+  export:
+    include: BusinessServices/Contexts/export.yaml
+  erpintegration:
+    include: BusinessServices/Contexts/erpintegration.yaml
+  capacityplanning:
+    include: BusinessServices/Contexts/capacityplanning.yaml
+  productionplanning:
+    include: BusinessServices/Contexts/productionplanning.yaml
+  reporting:
+    include: BusinessServices/Contexts/reporting.yaml
+  projectexporting:
+    include: BusinessServices/Contexts/projectexporting.yaml
+  projectimport:
+    include: BusinessServices/Contexts/projectimport.yaml
+  publicapi:
+    include: BusinessServices/Contexts/publicapi.yaml
+  analytics:
+    include: BusinessServices/Contexts/analytics.yaml
+  monitoring:
+    include: BusinessServices/Contexts/monitoring.yaml
+
+networks:
+  ams-project-backend:
+    driver: bridge
+  ams-project-infra:
+    driver: bridge

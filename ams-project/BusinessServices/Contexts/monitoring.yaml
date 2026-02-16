@@ -1,0 +1,106 @@
+# Monitoring Context Fragment
+
+metadata:
+  name: Monitoring
+  description: Monitoring (Health Monitor) bounded context services
+
+services:
+  healthmonitor:
+    image: amssolution/itops.healthmonitor:linux-v3-pre
+    containerName: healthmonitor
+    ports:
+      - "${HEALTH_MONITOR_PORT}:8080"
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ConnectionStrings__ams: ${AMS_DB}
+      Serilog__MinimumLevel: Fatal
+      HealthChecksUI__HealthChecks__0__Name: Identity server health check
+      HealthChecksUI__HealthChecks__0__Uri: http://identity-api:8080/hc
+      HealthChecksUI__HealthChecks__1__Name: Adminportal health check
+      HealthChecksUI__HealthChecks__1__Uri: http://adminportal:8080/hc
+      HealthChecksUI__HealthChecks__2__Name: Identity clienthub health check
+      HealthChecksUI__HealthChecks__2__Uri: http://identityaccess-clienthub:8080/hc
+      HealthChecksUI__HealthChecks__3__Name: Email sender health check
+      HealthChecksUI__HealthChecks__3__Uri: http://identityaccess-emailsender:8080/hc
+      HealthChecksUI__HealthChecks__4__Name: Web BFF health check
+      HealthChecksUI__HealthChecks__4__Uri: http://web-bff:8080/hc
+      HealthChecksUI__HealthChecks__5__Name: Desktop project planning composition health check
+      HealthChecksUI__HealthChecks__5__Uri: http://desktopprojectplanningcomposition:8080/hc
+      HealthChecksUI__HealthChecks__6__Name: Client hub health check
+      HealthChecksUI__HealthChecks__6__Uri: http://clienthub:8080/hc
+      HealthChecksUI__HealthChecks__7__Name: ProjectManagement API health check
+      HealthChecksUI__HealthChecks__7__Uri: http://projectmanagement-api:8080/hc
+      HealthChecksUI__HealthChecks__8__Name: ProjectManagement service health check
+      HealthChecksUI__HealthChecks__8__Uri: http://projectmanagement:8080/hc
+      HealthChecksUI__HealthChecks__9__Name: ProjectManagement readmodel generator health check
+      HealthChecksUI__HealthChecks__9__Uri: http://projectmanagement-readmodelgenerator:8080/hc
+      HealthChecksUI__HealthChecks__10__Name: ProjectManagement ERP data health check
+      HealthChecksUI__HealthChecks__10__Uri: http://projectmanagement-erpdata:8080/hc
+      HealthChecksUI__HealthChecks__11__Name: Collaboration API health check
+      HealthChecksUI__HealthChecks__11__Uri: http://collaboration-api:8080/hc
+      HealthChecksUI__HealthChecks__12__Name: Discussions API health check
+      HealthChecksUI__HealthChecks__12__Uri: http://discussions-api:8080/hc
+      HealthChecksUI__HealthChecks__13__Name: Memo API health check
+      HealthChecksUI__HealthChecks__13__Uri: http://memo-api:8080/hc
+      HealthChecksUI__HealthChecks__14__Name: Planning capacity utilization API health check
+      HealthChecksUI__HealthChecks__14__Uri: http://planning-capacityutilization-api:8080/hc
+      HealthChecksUI__HealthChecks__15__Name: Scheduling reporting API health check
+      HealthChecksUI__HealthChecks__15__Uri: http://planning-reporting-api:8080/hc
+      HealthChecksUI__HealthChecks__16__Name: Scheduling reporting clienthub health check
+      HealthChecksUI__HealthChecks__16__Uri: http://planning-reporting-clienthub:8080/hc
+      HealthChecksUI__HealthChecks__17__Name: Planning TypeCurve API health check
+      HealthChecksUI__HealthChecks__17__Uri: http://planning-typecurve-api:8080/hc
+      HealthChecksUI__HealthChecks__18__Name: Accounting API health check
+      HealthChecksUI__HealthChecks__18__Uri: http://accounting-api:8080/hc
+      HealthChecksUI__HealthChecks__19__Name: Accounting integration health check
+      HealthChecksUI__HealthChecks__19__Uri: http://accounting-integration:8080/hc
+      HealthChecksUI__HealthChecks__20__Name: Capacity planning API health check
+      HealthChecksUI__HealthChecks__20__Uri: http://capacityplanning-api:8080/hc
+      HealthChecksUI__HealthChecks__21__Name: Capacity planning readmodel generator health check
+      HealthChecksUI__HealthChecks__21__Uri: http://capacityplanning-readmodelgenerator:8080/hc
+      HealthChecksUI__HealthChecks__22__Name: BOM API health check
+      HealthChecksUI__HealthChecks__22__Uri: http://bom-api:8080/hc
+      HealthChecksUI__HealthChecks__23__Name: BOM readmodel generator health check
+      HealthChecksUI__HealthChecks__23__Uri: http://bom-readmodelgenerator:8080/hc
+      HealthChecksUI__HealthChecks__24__Name: Export API health check
+      HealthChecksUI__HealthChecks__24__Uri: http://export-api:8080/hc
+      HealthChecksUI__HealthChecks__25__Name: Export readmodel generator health check
+      HealthChecksUI__HealthChecks__25__Uri: http://export-readmodelgenerator:8080/hc
+      HealthChecksUI__HealthChecks__26__Name: Sales orders API health check
+      HealthChecksUI__HealthChecks__26__Uri: http://salesorders-api:8080/hc
+      HealthChecksUI__HealthChecks__27__Name: Sales orders integration health check
+      HealthChecksUI__HealthChecks__27__Uri: http://salesorders-integration:8080/hc
+      HealthChecksUI__HealthChecks__28__Name: Sales orders service health check
+      HealthChecksUI__HealthChecks__28__Uri: http://salesorders:8080/hc
+      HealthChecksUI__HealthChecks__29__Name: Wage data API health check
+      HealthChecksUI__HealthChecks__29__Uri: http://wage-data-api:8080/hc
+      HealthChecksUI__HealthChecks__30__Name: ERP read model generator health check
+      HealthChecksUI__HealthChecks__30__Uri: http://erpreadmodel-readmodelgenerator:8080/hc
+      HealthChecksUI__HealthChecks__31__Name: Analytics web health check
+      HealthChecksUI__HealthChecks__31__Uri: http://analytics-web:3000/analytics/hc
+      HealthChecksUI__HealthChecks__32__Name: ERP refs web health check
+      HealthChecksUI__HealthChecks__32__Uri: http://erprefs-web:3000/erprefs/hc
+      HealthChecksUI__HealthChecks__33__Name: Discussions web health check
+      HealthChecksUI__HealthChecks__33__Uri: http://discussions-web:3000/discussions/hc
+      HealthChecksUI__HealthChecks__34__Name: Memo web health check
+      HealthChecksUI__HealthChecks__34__Uri: http://memo-web:3000/memo/hc
+      HealthChecksUI__HealthChecks__35__Name: ProjectImport API health check
+      HealthChecksUI__HealthChecks__35__Uri: http://projectimport-api:8080/hc
+    volumes:
+      - healthmonitor-data:/app/data
+    networks:
+      - ams-project-backend
+      - ams-project-infra
+    restart: unless-stopped
+
+volumes:
+  healthmonitor-data: {}
+
+
+networks:
+  ams-project-backend:
+    external: true
+  ams-project-infra:
+    external: true

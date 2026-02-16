@@ -1,0 +1,54 @@
+# Discussions Context Fragment
+
+metadata:
+  name: Discussions
+  description: Discussions bounded context services
+
+services:
+  discussions-api:
+    image: amssolution/discussions.api:linux-v3.1.0-pre
+    containerName: discussions-api
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ConnectionStrings__EventStore: ${EVENTSTORE_DB}
+      ConnectionStrings__Transport: ${AMS_DB}
+      ConnectionStrings__Persistence: ${AMS_DB}
+      Serilog__MinimumLevel: ${LOG_LEVEL}
+    networks:
+      - ams-project-backend
+      - ams-project-infra
+    restart: unless-stopped
+    healthCheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
+  discussions-web:
+    image: amssolution/discussions-web:linux-v3.1.0-pre
+    containerName: discussions-web
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      NEXT_PUBLIC_API_BASE_URL: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${BFF_PORT}
+      API_BASE_URL: http://discussions-api:8080
+      NEXT_PUBLIC_OIDC_AUTHORITY: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${IDENTITY_SERVER_PORT}
+      NEXT_PUBLIC_OIDC_CLIENT_ID: web-bff
+    networks:
+      - ams-project-backend
+    restart: unless-stopped
+    healthCheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
+
+networks:
+  ams-project-backend:
+    external: true
+  ams-project-infra:
+    external: true

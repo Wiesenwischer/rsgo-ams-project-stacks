@@ -1,0 +1,39 @@
+# ProductionPlanning Context Fragment
+
+metadata:
+  name: ProductionPlanning
+  description: Production Planning (Bill of Materials) bounded context services
+
+services:
+  bom-api:
+    image: amssolution/productionplanning.billofmaterials.webapi:linux-v3.1.0-pre
+    containerName: bom-api
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ConnectionStrings__ams: ${AMS_DB}
+      ConnectionStrings__Transport: ${AMS_DB}
+      ConnectionStrings__Persistence: ${AMS_DB}
+      Serilog__MinimumLevel: ${LOG_LEVEL}
+    networks:
+      - ams-project-backend
+    restart: unless-stopped
+
+  bom-readmodelgenerator:
+    image: amssolution/productionplanning.readmodelgenerator:linux-v3.1.0-pre
+    containerName: bom-readmodelgenerator
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ConnectionStrings__ams: ${AMS_DB}
+      ConnectionStrings__Transport: ${AMS_DB}
+      ConnectionStrings__Persistence: ${AMS_DB}
+      Serilog__MinimumLevel: ${LOG_LEVEL}
+    networks:
+      - ams-project-backend
+    restart: unless-stopped
+
+
+networks:
+  ams-project-backend:
+    external: true

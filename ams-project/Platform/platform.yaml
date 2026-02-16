@@ -1,0 +1,133 @@
+# Platform Stack Fragment
+# Core platform services (Web BFF, Desktop Gateways, ClientHub)
+
+metadata:
+  name: Platform
+  description: Platform services (Web BFF, Desktop API Gateway, Composition Gateway, ClientHub)
+
+variables:
+  Authentication__RequireHttpsMetadata:
+    label: Require HTTPS Metadata
+    description: Whether to require HTTPS for OIDC metadata
+    type: Boolean
+    default: "false"
+    group: Authentication
+
+  Authentication__EnableWebLogin:
+    label: Enable Web Login
+    description: Enable web-based login flow
+    type: Boolean
+    default: "true"
+    group: Authentication
+
+  # Redis Connection
+  REDIS_CONNECTION:
+    label: Redis Connection
+    description: Redis connection string for session cache
+    type: String
+    default: cachedata:6379
+    group: Cache
+
+services:
+  web-bff:
+    image: amssolution/web.bff:linux-v3.1.0-pre
+    containerName: web-bff
+    ports:
+      - "${BFF_PORT}:8080"
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      IdentityProvider__ProviderType: IdentityServer
+      Authentication__EnableWebLogin: ${Authentication__EnableWebLogin}
+      Authentication__Authority: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${IDENTITY_SERVER_PORT}
+      Authentication__ClientId: web-bff
+      Authentication__RedirectUri: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${BFF_PORT}/signin-oidc
+      Authentication__PostLogoutRedirectUri: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${BFF_PORT}/
+      Authentication__RequireHttpsMetadata: ${Authentication__RequireHttpsMetadata}
+      Authentication__UsePkce: "true"
+      Authentication__SaveTokens: "true"
+      Authentication__ResponseMode: query
+      Authentication__SkipUnrecognizedRequests: "true"
+      Authentication__RemoteSignOutPath: /signout-oidc
+      Authentication__DisableCorrelationValidation: "false"
+      ConnectionStrings__cache: ${REDIS_CONNECTION}
+      ConnectionStrings__ams: ${AMS_DB}
+      BackendServices__ProjectManagement__BaseUrl: http://projectmanagement-api:8080
+      BackendServices__Export__BaseUrl: http://export-api:8080
+      ReverseProxy__Clusters__projectmanagement-cluster__Destinations__destination1__Address: http://projectmanagement-api:8080/
+      ReverseProxy__Clusters__export-cluster__Destinations__destination1__Address: http://export-api:8080/
+      ReverseProxy__Clusters__projectmanagement-web-cluster__Destinations__destination1__Address: http://projectmanagement-web:3000/
+      ReverseProxy__Clusters__memo-web-cluster__Destinations__destination1__Address: http://memo-web:3000/
+      ReverseProxy__Clusters__discussions-web-cluster__Destinations__destination1__Address: http://discussions-web:3000/
+      ReverseProxy__Clusters__export-web-cluster__Destinations__destination1__Address: http://export-web:3000/
+      ReverseProxy__Clusters__sales-cluster__Destinations__destination1__Address: http://salesorders-api:8080/
+      ReverseProxy__Clusters__erprefs-web-cluster__Destinations__destination1__Address: http://erprefs-web:3000/
+      ReverseProxy__Clusters__analytics-web-cluster__Destinations__destination1__Address: http://analytics-web:3000/
+      ReverseProxy__Clusters__organizationsaccess-cluster__Destinations__destination1__Address: http://organizationsaccess-api:8080/
+      Cors__AllowedOrigins__0: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${BFF_PORT}
+      Cors__AllowedOrigins__1: http://localhost:3000
+      Cors__AllowedOrigins__2: http://localhost:7716
+      Cors__AllowedOrigins__3: http://host.docker.internal:5000
+      JwtValidation__Authorities__0: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${IDENTITY_SERVER_PORT}
+      Serilog__MinimumLevel: ${LOG_LEVEL}
+      SessionCookie__Secure: "false"
+      SessionCookie__SameSite: Lax
+      SessionCookie__HttpOnly: "false"
+      DataProtection__ApplicationName: WebBff
+      DataProtection__PersistKeysToFileSystem: /app/data-protection-keys
+    volumes:
+      - web-bff-dataprotection:/app/data-protection-keys
+    networks:
+      - ams-project-backend
+      - ams-project-infra
+    restart: unless-stopped
+
+  desktopschedulingapigw:
+    image: amssolution/desktopschedulingapigw:linux-v3.1.0-pre
+    containerName: desktopschedulingapigw
+    ports:
+      - "5200:8080"
+      - "15200:9901"
+    environment:
+      ENVOY_UID: "0"
+    networks:
+      - ams-project-backend
+    restart: unless-stopped
+
+  desktopprojectplanningcomposition:
+    image: amssolution/desktop.projectplanning.compositiongateway:linux-v3.1.0-pre
+    containerName: desktopprojectplanningcomposition
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      Urls__ProjectManagement: http://projectmanagement-api:8080
+      Urls__SalesOrders: http://salesorders-api:8080
+      Serilog__MinimumLevel: ${LOG_LEVEL}
+    networks:
+      - ams-project-backend
+    restart: unless-stopped
+
+  clienthub:
+    image: amssolution/itops.clienthub:linux-v3.1.0-pre
+    containerName: clienthub
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ConnectionStrings__ams: ${AMS_DB}
+      Serilog__MinimumLevel: ${LOG_LEVEL}
+    networks:
+      - ams-project-backend
+    restart: unless-stopped
+
+volumes:
+  web-bff-dataprotection: {}
+
+
+networks:
+  ams-project-backend:
+    external: true
+  ams-project-infra:
+    external: true

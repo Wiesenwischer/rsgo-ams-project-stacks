@@ -1,0 +1,71 @@
+# Export Context Fragment
+
+metadata:
+  name: Export
+  description: Export bounded context services
+
+services:
+  export-api:
+    image: amssolution/export.api:linux-v3.1.0-pre
+    containerName: export-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ConnectionStrings__ams: ${AMS_DB}
+      ConnectionStrings__cache: ${REDIS_CONNECTION}
+      Serilog__MinimumLevel: ${LOG_LEVEL}
+    networks:
+      - ams-project-backend
+      - ams-project-infra
+    restart: unless-stopped
+    healthCheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
+  export-web:
+    image: amssolution/export-web:linux-v3.1.0-pre
+    containerName: export-web
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_BASE_URL: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${BFF_PORT}
+      API_BASE_URL: http://web-bff:5000
+    networks:
+      - ams-project-backend
+    restart: unless-stopped
+    healthCheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/export-web/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
+  export-readmodelgenerator:
+    image: amssolution/export.readmodelgenerator:linux-v3.1.0-pre
+    containerName: export-readmodelgenerator
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ConnectionStrings__ams: ${AMS_DB}
+      ConnectionStrings__Transport: ${AMS_DB}
+      ConnectionStrings__Persistence: ${AMS_DB}
+      Serilog__MinimumLevel: ${LOG_LEVEL}
+    networks:
+      - ams-project-backend
+      - ams-project-infra
+    restart: unless-stopped
+    healthCheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
+
+networks:
+  ams-project-backend:
+    external: true
+  ams-project-infra:
+    external: true

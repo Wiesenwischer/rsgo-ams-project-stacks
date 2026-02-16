@@ -1,0 +1,235 @@
+# ProjectManagement Context Fragment
+
+metadata:
+  name: ProjectManagement
+  description: Project Management bounded context services
+
+services:
+  projectmanagement-migrator:
+    image: amssolution/projectmanagement.migrator:linux-v3.1.0-pre
+    containerName: projectmanagement-migrator
+    lifecycle: init
+    environment:
+      ConnectionStrings__ProjectManagement: ${AMS_DB}
+      ConnectionStrings__Persistence: ${AMS_DB}
+      ConnectionStrings__Transport: ${AMS_DB}
+      ConnectionStrings__ams: ${AMS_DB}
+    networks:
+      - ams-project-backend
+
+  projectmanagement-api:
+    image: amssolution/projectmanagement.api:linux-v3.1.0-pre
+    containerName: projectmanagement-api
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ConnectionStrings__ProjectManagement: ${AMS_DB}
+      ConnectionStrings__Transport: ${AMS_DB}
+      ConnectionStrings__Persistence: ${AMS_DB}
+      ConnectionStrings__cache: ${REDIS_CONNECTION}
+      ConnectionStrings__EventStore: ${EVENTSTORE_DB}
+      ServiceBusTimeToWaitBeforeTriggeringCircuitBreaker: ${SERVICE_BUS_TIME_TO_WAIT_BEFORE_TRIGGERING_CIRCUIT_BREAKER}
+      ExitOnCriticalError: ${EXIT_ON_CRITICAL_ERROR}
+      JwtAuthority: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${IDENTITY_SERVER_PORT}
+      Authentication__KeycloakAuthority: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${IDENTITY_SERVER_PORT}
+      JwtValidation__Authorities__0: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${IDENTITY_SERVER_PORT}
+      Cors__AllowedOrigins: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${BFF_PORT}
+      Serilog__MinimumLevel: ${LOG_LEVEL}
+    networks:
+      - ams-project-backend
+      - ams-project-infra
+    restart: unless-stopped
+    healthCheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
+  collaboration-api:
+    image: amssolution/collaboration.api:linux-v3.1.0-pre
+    containerName: collaboration-api
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ConnectionStrings__ams: ${AMS_DB}
+      Serilog__MinimumLevel: ${LOG_LEVEL}
+    networks:
+      - ams-project-backend
+    restart: unless-stopped
+    healthCheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
+  accounting-api:
+    image: amssolution/accounting.api:linux-v3.1.0-pre
+    containerName: accounting-api
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ConnectionStrings__ams: ${AMS_DB}
+      ConnectionStrings__cache: ${REDIS_CONNECTION}
+      ServiceBusTimeToWaitBeforeTriggeringCircuitBreaker: ${SERVICE_BUS_TIME_TO_WAIT_BEFORE_TRIGGERING_CIRCUIT_BREAKER}
+      ExitOnCriticalError: ${EXIT_ON_CRITICAL_ERROR}
+      JwtAuthority: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${IDENTITY_SERVER_PORT}
+      Authentication__KeycloakAuthority: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${IDENTITY_SERVER_PORT}
+      JwtValidation__Authorities__0: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${IDENTITY_SERVER_PORT}
+      Cors__AllowedOrigins: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${BFF_PORT}
+      Serilog__MinimumLevel: ${LOG_LEVEL}
+    networks:
+      - ams-project-backend
+      - ams-project-infra
+    restart: unless-stopped
+    healthCheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
+  projectmanagement:
+    image: amssolution/projectmanagement:linux-v3.1.0-pre
+    containerName: projectmanagement
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ConnectionStrings__ams: ${AMS_DB}
+      ConnectionStrings__Transport: ${AMS_DB}
+      ConnectionStrings__Persistence: ${AMS_DB}
+      ServiceBusTimeToWaitBeforeTriggeringCircuitBreaker: ${SERVICE_BUS_TIME_TO_WAIT_BEFORE_TRIGGERING_CIRCUIT_BREAKER}
+      ExitOnCriticalError: ${EXIT_ON_CRITICAL_ERROR}
+      CultureCode: ${CULTURE_CODE}
+      Serilog__MinimumLevel: ${LOG_LEVEL}
+    networks:
+      - ams-project-backend
+    restart: unless-stopped
+    healthCheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
+  projectmanagement-readmodelgenerator:
+    image: amssolution/projectmanagement.readmodelgenerator:linux-v3.1.0-pre
+    containerName: projectmanagement-readmodelgenerator
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ConnectionStrings__ams: ${AMS_DB}
+      ConnectionStrings__Transport: ${AMS_DB}
+      ConnectionStrings__Persistence: ${AMS_DB}
+      ConnectionStrings__EventStore: ${EVENTSTORE_DB}
+      Serilog__MinimumLevel: ${LOG_LEVEL}
+    networks:
+      - ams-project-backend
+      - ams-project-infra
+    restart: unless-stopped
+    healthCheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
+  projectmanagement-erpdata:
+    image: amssolution/projectmanagement.erpdata:linux-v3.1.0-pre
+    containerName: projectmanagement-erpdata
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ConnectionStrings__ams: ${AMS_DB}
+      ConnectionStrings__Transport: ${AMS_DB}
+      ConnectionStrings__Persistence: ${AMS_DB}
+      ConnectionStrings__EventStore: ${EVENTSTORE_DB}
+      Serilog__MinimumLevel: ${LOG_LEVEL}
+    networks:
+      - ams-project-backend
+      - ams-project-infra
+    restart: unless-stopped
+    healthCheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
+  accounting-capacitydispatcher:
+    image: amssolution/accounting.resourcecapacitydispatcher:linux-v3.1.0-pre
+    containerName: accounting-capacitydispatcher
+    environment:
+      ConnectionStrings__ams: ${AMS_DB}
+      Serilog__MinimumLevel: ${LOG_LEVEL}
+    networks:
+      - ams-project-backend
+    restart: unless-stopped
+
+  accounting-integration:
+    image: amssolution/accounting.integration:linux-v3.1.0-pre
+    containerName: accounting-integration
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ConnectionStrings__ams: ${AMS_DB}
+      ServiceBusTimeToWaitBeforeTriggeringCircuitBreaker: ${SERVICE_BUS_TIME_TO_WAIT_BEFORE_TRIGGERING_CIRCUIT_BREAKER}
+      ExitOnCriticalError: ${EXIT_ON_CRITICAL_ERROR}
+      Serilog__MinimumLevel: ${LOG_LEVEL}
+    networks:
+      - ams-project-backend
+    restart: unless-stopped
+    healthCheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
+  projectmanagement-web:
+    image: amssolution/projectmanagement-web:linux-v3.1.0-pre
+    containerName: projectmanagement-web
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      NEXT_PUBLIC_API_BASE_URL: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${BFF_PORT}
+      API_BASE_URL: http://projectmanagement-api:8080
+    networks:
+      - ams-project-backend
+    restart: unless-stopped
+    healthCheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
+  erprefs-web:
+    image: amssolution/erprefs-web:linux-v3.1.0-pre
+    containerName: erprefs-web
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      NEXT_PUBLIC_API_BASE_URL: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${BFF_PORT}
+    networks:
+      - ams-project-backend
+    restart: unless-stopped
+    healthCheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
+
+networks:
+  ams-project-backend:
+    external: true
+  ams-project-infra:
+    external: true

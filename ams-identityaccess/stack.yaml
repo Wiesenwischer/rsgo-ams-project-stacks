@@ -1,0 +1,84 @@
+# ams.identityaccess ReadyStackGo Manifest
+# Standalone Identity Provider Product
+
+metadata:
+  name: ams.identityaccess
+  productId: com.ams-erp.project.identityaccess
+  description: Identity Provider (IdentityServer, AdminPortal, ClientHub, EmailSender)
+  productVersion: "3.1.0-pre"
+  author: ams solution GmbH
+  category: Enterprise
+  tags:
+    - ams
+    - identity
+    - authentication
+
+sharedVariables:
+  # Network Configuration
+  AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP:
+    label: External DNS/IP
+    description: External DNS name or IP for accessing services
+    type: String
+    default: host.docker.internal
+    required: true
+    group: Network
+
+  # Database Configuration
+  AMS_DB:
+    label: ams Database Connection
+    description: SQL Server connection string for ams database
+    type: SqlServerConnectionString
+    required: true
+    group: Database
+
+  # Environment Configuration
+  CULTURE_CODE:
+    label: Culture Code
+    description: Default culture code for localization
+    type: String
+    default: de-DE
+    group: General
+
+  # Logging
+  LOG_LEVEL:
+    label: Log Level
+    description: Minimum log level for Serilog
+    type: Select
+    options:
+      - value: Verbose
+        label: Verbose
+      - value: Debug
+        label: Debug
+      - value: Information
+        label: Information
+      - value: Warning
+        label: Warning
+      - value: Error
+        label: Error
+      - value: Fatal
+        label: Fatal
+    default: Fatal
+    group: Logging
+
+  # Advanced
+  SERVICE_BUS_TIME_TO_WAIT_BEFORE_TRIGGERING_CIRCUIT_BREAKER:
+    label: Service Bus Circuit Breaker Timeout
+    description: Time in seconds before triggering circuit breaker
+    type: Number
+    default: "120"
+    group: Advanced
+
+  EXIT_ON_CRITICAL_ERROR:
+    label: Exit on Critical Error
+    description: Whether services should exit on critical errors
+    type: Boolean
+    default: "false"
+    group: Advanced
+
+stacks:
+  identity-access:
+    include: IdentityAccess/identity-access.yaml
+
+networks:
+  ams-project-identity:
+    driver: bridge
