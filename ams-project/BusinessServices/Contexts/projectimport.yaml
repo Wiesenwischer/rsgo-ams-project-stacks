@@ -24,6 +24,15 @@ services:
     networks:
       - ams-project-backend
     restart: unless-stopped
+    healthCheck:
+      type: http
+      path: /hc
+      port: 8080
+      test: ["CMD", "curl", "-f", "http://localhost:8080/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
 
 
 networks:

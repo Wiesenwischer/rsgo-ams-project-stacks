@@ -16,7 +16,10 @@ services:
       - ams-project-backend
     restart: unless-stopped
     healthCheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      type: http
+      path: /analytics/hc
+      port: 3000
+      test: ["CMD", "curl", "-f", "http://localhost:3000/analytics/hc"]
       interval: 30s
       timeout: 10s
       retries: 3

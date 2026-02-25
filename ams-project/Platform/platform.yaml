@@ -82,6 +82,15 @@ services:
       - ams-project-backend
       - ams-project-infra
     restart: unless-stopped
+    healthCheck:
+      type: http
+      path: /hc
+      port: 8080
+      test: ["CMD", "curl", "-f", "http://localhost:8080/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
 
   desktopschedulingapigw:
     image: amssolution/desktopschedulingapigw:linux-v3.1.0-pre
@@ -94,6 +103,15 @@ services:
     networks:
       - ams-project-backend
     restart: unless-stopped
+    healthCheck:
+      type: http
+      path: /ready
+      port: 9901
+      test: ["CMD-SHELL", "curl -sf http://localhost:9901/ready || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 30s
 
   desktopprojectplanningcomposition:
     image: amssolution/desktop.projectplanning.compositiongateway:linux-v3.1.0-pre
@@ -108,6 +126,15 @@ services:
     networks:
       - ams-project-backend
     restart: unless-stopped
+    healthCheck:
+      type: http
+      path: /hc
+      port: 8080
+      test: ["CMD", "curl", "-f", "http://localhost:8080/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
 
   clienthub:
     image: amssolution/itops.clienthub:linux-v3.1.0-pre
@@ -121,6 +148,15 @@ services:
     networks:
       - ams-project-backend
     restart: unless-stopped
+    healthCheck:
+      type: http
+      path: /hc
+      port: 8080
+      test: ["CMD", "curl", "-f", "http://localhost:8080/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
 
 volumes:
   web-bff-dataprotection: {}

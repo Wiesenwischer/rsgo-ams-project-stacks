@@ -21,6 +21,9 @@ services:
       - ams-project-infra
     restart: unless-stopped
     healthCheck:
+      type: http
+      path: /hc
+      port: 8080
       test: ["CMD", "curl", "-f", "http://localhost:8080/hc"]
       interval: 30s
       timeout: 10s
@@ -40,7 +43,10 @@ services:
       - ams-project-backend
     restart: unless-stopped
     healthCheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      type: http
+      path: /discussions/hc
+      port: 3000
+      test: ["CMD", "curl", "-f", "http://localhost:3000/discussions/hc"]
       interval: 30s
       timeout: 10s
       retries: 3
