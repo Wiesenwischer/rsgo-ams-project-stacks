@@ -139,13 +139,6 @@ sharedVariables:
     group: Cache
 
   # Service Ports
-  HEALTH_MONITOR_PORT:
-    label: Health Monitor Port
-    description: Port for Health Monitor UI
-    type: Port
-    default: "5100"
-    group: Monitoring
-
   PUBLIC_API_PORT:
     label: Public API Port
     description: Port for Public Project API
@@ -204,8 +197,6 @@ stacks:
     include: BusinessServices/Contexts/publicapi.yaml
   analytics:
     include: BusinessServices/Contexts/analytics.yaml
-  monitoring:
-    include: BusinessServices/Contexts/monitoring.yaml
 
 networks:
   ams-project-backend:
