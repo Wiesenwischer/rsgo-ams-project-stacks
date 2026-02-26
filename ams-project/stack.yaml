@@ -118,10 +118,17 @@ sharedVariables:
 
   # Infrastructure Connections (previously in business-services stack)
   EVENTSTORE_DB:
-    label: EventStore Connection
-    description: EventStoreDB connection string
+    label: EventStoreDB Connection (gRPC)
+    description: EventStoreDB gRPC connection string for discussions (esdb:// protocol)
     type: EventStoreConnectionString
-    default: "esdb://admin:changeit@eventstore-db:2113?tls=false&tlsVerifyCert=false"
+    default: "esdb://admin:changeit@eventstore-db:2114?tls=false&tlsVerifyCert=false"
+    group: EventStore
+
+  EVENTSTORE_TCP:
+    label: EventStore Connection (TCP)
+    description: EventStore v5 TCP connection string for projectmanagement services
+    type: String
+    default: "tcp://admin:changeit@eventstore:1113"
     group: EventStore
 
   REDIS_CONNECTION:
