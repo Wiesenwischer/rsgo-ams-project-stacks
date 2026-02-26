@@ -121,7 +121,7 @@ sharedVariables:
     label: EventStoreDB Connection (gRPC)
     description: EventStoreDB gRPC connection string for discussions (esdb:// protocol)
     type: EventStoreConnectionString
-    default: "esdb://admin:changeit@eventstore-db:2114?tls=false&tlsVerifyCert=false"
+    default: "esdb://admin:changeit@eventstore-db:2113?tls=false&tlsVerifyCert=false"
     group: EventStore
 
   EVENTSTORE_TCP:

@@ -242,10 +242,8 @@ services:
       - ams-project-backend
     restart: unless-stopped
     healthCheck:
-      type: http
-      path: /erprefs/hc
+      type: tcp
       port: 3000
-      test: ["CMD", "curl", "-f", "http://localhost:3000/erprefs/hc"]
       interval: 30s
       timeout: 10s
       retries: 3
