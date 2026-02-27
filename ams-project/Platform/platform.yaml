@@ -55,8 +55,18 @@ services:
       ConnectionStrings__ams: ${AMS_DB}
       BackendServices__ProjectManagement__BaseUrl: http://projectmanagement-api:8080
       BackendServices__Export__BaseUrl: http://export-api:8080
+      BackendServices__Memo__BaseUrl: http://memo-api:8080
+      BackendServices__Discussions__BaseUrl: http://discussions-api:8080
+      BackendServices__Collaboration__BaseUrl: http://collaboration-api:8080
+      BackendServices__Sales__BaseUrl: http://salesorders-api:8080
+      BackendServices__ProductionPlanning__BaseUrl: http://bom-api:8080
+      BackendServices__OrganizationsAccess__BaseUrl: http://organizationsaccess-api:8080
       ReverseProxy__Clusters__projectmanagement-cluster__Destinations__destination1__Address: http://projectmanagement-api:8080/
       ReverseProxy__Clusters__export-cluster__Destinations__destination1__Address: http://export-api:8080/
+      ReverseProxy__Clusters__memo-cluster__Destinations__destination1__Address: http://memo-api:8080/
+      ReverseProxy__Clusters__discussions-cluster__Destinations__destination1__Address: http://discussions-api:8080/
+      ReverseProxy__Clusters__collaboration-cluster__Destinations__destination1__Address: http://collaboration-api:8080/
+      ReverseProxy__Clusters__production-cluster__Destinations__destination1__Address: http://bom-api:8080/
       ReverseProxy__Clusters__projectmanagement-web-cluster__Destinations__destination1__Address: http://projectmanagement-web:3000/
       ReverseProxy__Clusters__memo-web-cluster__Destinations__destination1__Address: http://memo-web:3000/
       ReverseProxy__Clusters__discussions-web-cluster__Destinations__destination1__Address: http://discussions-web:3000/
