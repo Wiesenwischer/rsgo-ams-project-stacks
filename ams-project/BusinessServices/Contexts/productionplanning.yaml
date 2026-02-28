@@ -52,6 +52,24 @@ services:
       startPeriod: 40s
 
 
+  bom-link-client:
+    image: amssolution/bom.link.client:linux-v3.1.0-pre
+    containerName: bom-link-client
+    environment:
+      NODE_ENV: ${NODE_ENV}
+    networks:
+      - ams-project-backend
+    restart: unless-stopped
+    healthCheck:
+      type: http
+      path: /bom-link-client/hc
+      port: 8080
+      test: ["CMD", "curl", "-f", "http://localhost:8080/bom-link-client/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
 networks:
   ams-project-backend:
     external: true
