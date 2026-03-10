@@ -5,6 +5,20 @@ metadata:
   description: Export bounded context services
 
 services:
+  export-migrator:
+    image: amssolution/export.migrator:linux-v3.1.0-pre
+    containerName: export-migrator
+    lifecycle: init
+    environment:
+      ConnectionStrings__Persistence: ${AMS_DB}
+      ConnectionStrings__Transport: ${AMS_DB}
+      DB_ADMIN_USER: ${DB_ADMIN_USER}
+      DB_ADMIN_PASSWORD: ${DB_ADMIN_PASSWORD}
+      DB_RUNTIME_USER: ${DB_RUNTIME_USER}
+      DB_RUNTIME_PASSWORD: ${DB_RUNTIME_PASSWORD}
+    networks:
+      - ams-project-backend
+
   export-api:
     image: amssolution/export.api:linux-v3.1.0-pre
     containerName: export-api
