@@ -6,7 +6,7 @@ metadata:
 
 services:
   erpintegration-migrator:
-    image: amssolution/erpintegration.migrator:linux-v3.0.1-rc
+    image: amssolution/erpintegration.migrator:linux-v3.1.0-rc
     containerName: erpintegration-migrator
     lifecycle: init
     environment:
@@ -20,7 +20,7 @@ services:
       - ams-project-backend
 
   erpreadmodel-readmodelgenerator:
-    image: amssolution/erpreadmodel.readmodelgenerator:linux-v3.0.1-rc
+    image: amssolution/erpreadmodel.readmodelgenerator:linux-v3.1.0-rc
     containerName: erpreadmodel-readmodelgenerator
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
@@ -45,7 +45,7 @@ services:
       startPeriod: 40s
 
   planning-capacityutilization-api:
-    image: amssolution/planning.capacityutilization.api:linux-v3.0.1-rc
+    image: amssolution/planning.capacityutilization.api:linux-v3.1.0-rc
     containerName: planning-capacityutilization-api
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080
@@ -67,7 +67,7 @@ services:
       startPeriod: 40s
 
   planning-typecurve-api:
-    image: amssolution/planning.typecurve.api:linux-v3.0.1-rc
+    image: amssolution/planning.typecurve.api:linux-v3.1.0-rc
     containerName: planning-typecurve-api
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080
@@ -89,7 +89,7 @@ services:
       startPeriod: 40s
 
   wage-data-api:
-    image: amssolution/wage.wagedata.api:linux-v3.0.1-rc
+    image: amssolution/wage.wagedata.api:linux-v3.1.0-rc
     containerName: wage-data-api
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080

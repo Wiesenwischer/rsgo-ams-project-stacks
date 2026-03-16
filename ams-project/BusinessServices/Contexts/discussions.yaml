@@ -6,7 +6,7 @@ metadata:
 
 services:
   discussions-migrator:
-    image: amssolution/discussions.migrator:linux-v3.0.1-rc
+    image: amssolution/discussions.migrator:linux-v3.1.0-rc
     containerName: discussions-migrator
     lifecycle: init
     environment:
@@ -20,7 +20,7 @@ services:
       - ams-project-backend
 
   discussions-api:
-    image: amssolution/discussions.api:linux-v3.0.1-rc
+    image: amssolution/discussions.api:linux-v3.1.0-rc
     containerName: discussions-api
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080
@@ -45,7 +45,7 @@ services:
       startPeriod: 40s
 
   discussions-web:
-    image: amssolution/discussions-web:linux-v3.0.1-rc
+    image: amssolution/discussions-web:linux-v3.1.0-rc
     containerName: discussions-web
     environment:
       NODE_ENV: ${NODE_ENV}

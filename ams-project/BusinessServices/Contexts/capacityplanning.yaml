@@ -6,7 +6,7 @@ metadata:
 
 services:
   capacityplanning-migrator:
-    image: amssolution/capacityplanning.migrator:linux-v3.0.1-rc
+    image: amssolution/capacityplanning.migrator:linux-v3.1.0-rc
     containerName: capacityplanning-migrator
     lifecycle: init
     environment:
@@ -20,7 +20,7 @@ services:
       - ams-project-backend
 
   capacityplanning-api:
-    image: amssolution/capacityplanning.api:linux-v3.0.1-rc
+    image: amssolution/capacityplanning.api:linux-v3.1.0-rc
     containerName: capacityplanning-api
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080
@@ -42,7 +42,7 @@ services:
       startPeriod: 40s
 
   capacityplanning-readmodelgenerator:
-    image: amssolution/capacityplanning.readmodelgenerator:linux-v3.0.1-rc
+    image: amssolution/capacityplanning.readmodelgenerator:linux-v3.1.0-rc
     containerName: capacityplanning-readmodelgenerator
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080

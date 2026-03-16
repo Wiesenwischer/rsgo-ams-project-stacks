@@ -6,7 +6,7 @@ metadata:
 
 services:
   salesorders-migrator:
-    image: amssolution/salesorders.migrator:linux-v3.0.1-rc
+    image: amssolution/salesorders.migrator:linux-v3.1.0-rc
     containerName: salesorders-migrator
     lifecycle: init
     environment:
@@ -20,7 +20,7 @@ services:
       - ams-project-backend
 
   salesorders-api:
-    image: amssolution/salesorders.api:linux-v3.0.1-rc
+    image: amssolution/salesorders.api:linux-v3.1.0-rc
     containerName: salesorders-api
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
@@ -45,7 +45,7 @@ services:
       startPeriod: 40s
 
   salesorders:
-    image: amssolution/salesorders:linux-v3.0.1-rc
+    image: amssolution/salesorders:linux-v3.1.0-rc
     containerName: salesorders
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
@@ -69,7 +69,7 @@ services:
       startPeriod: 40s
 
   salesorders-integration:
-    image: amssolution/salesorders.integration:linux-v3.0.1-rc
+    image: amssolution/salesorders.integration:linux-v3.1.0-rc
     containerName: salesorders-integration
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}

@@ -7,7 +7,7 @@ metadata:
 services:
   # Temporarily disabled
   # publicapi:
-  #   image: amssolution/public-project-api:linux-v3.0.1-rc
+  #   image: amssolution/public-project-api:linux-v3.1.0-rc
   #   containerName: publicapi
   #   ports:
   #     - "${PUBLIC_API_PORT}:80"

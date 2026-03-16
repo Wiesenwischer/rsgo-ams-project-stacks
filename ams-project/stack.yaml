@@ -5,7 +5,7 @@ metadata:
   name: ams.project
   productId: com.ams-erp.project
   description: Enterprise Project Management System with Infrastructure, Platform and Business Services
-  productVersion: "3.0.1-rc"
+  productVersion: "3.1.0-rc"
   author: ams solution GmbH
   category: Enterprise
   tags:

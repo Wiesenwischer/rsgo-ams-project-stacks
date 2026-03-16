@@ -6,7 +6,7 @@ metadata:
 
 services:
   export-migrator:
-    image: amssolution/export.migrator:linux-v3.0.1-rc
+    image: amssolution/export.migrator:linux-v3.1.0-rc
     containerName: export-migrator
     lifecycle: init
     environment:
@@ -20,7 +20,7 @@ services:
       - ams-project-backend
 
   export-api:
-    image: amssolution/export.api:linux-v3.0.1-rc
+    image: amssolution/export.api:linux-v3.1.0-rc
     containerName: export-api
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
@@ -43,7 +43,7 @@ services:
       startPeriod: 40s
 
   export-web:
-    image: amssolution/export-web:linux-v3.0.1-rc
+    image: amssolution/export-web:linux-v3.1.0-rc
     containerName: export-web
     environment:
       NODE_ENV: production
@@ -61,7 +61,7 @@ services:
       startPeriod: 40s
 
   export-readmodelgenerator:
-    image: amssolution/export.readmodelgenerator:linux-v3.0.1-rc
+    image: amssolution/export.readmodelgenerator:linux-v3.1.0-rc
     containerName: export-readmodelgenerator
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}

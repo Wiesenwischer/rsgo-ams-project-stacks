@@ -6,7 +6,7 @@ metadata:
 
 services:
   memo-migrator:
-    image: amssolution/memo.migrator:linux-v3.0.1-rc
+    image: amssolution/memo.migrator:linux-v3.1.0-rc
     containerName: memo-migrator
     lifecycle: init
     environment:
@@ -20,7 +20,7 @@ services:
       - ams-project-backend
 
   memo-api:
-    image: amssolution/memo.api:linux-v3.0.1-rc
+    image: amssolution/memo.api:linux-v3.1.0-rc
     containerName: memo-api
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080
@@ -43,7 +43,7 @@ services:
       startPeriod: 40s
 
   memo-web:
-    image: amssolution/memo-web:linux-v3.0.1-rc
+    image: amssolution/memo-web:linux-v3.1.0-rc
     containerName: memo-web
     environment:
       NODE_ENV: ${NODE_ENV}

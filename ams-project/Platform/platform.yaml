@@ -30,7 +30,7 @@ variables:
 
 services:
   web-bff:
-    image: amssolution/web.bff:linux-v3.0.1-rc
+    image: amssolution/web.bff:linux-v3.1.0-rc
     containerName: web-bff
     ports:
       - "${BFF_PORT}:8080"
@@ -103,7 +103,7 @@ services:
       startPeriod: 40s
 
   desktopschedulingapigw:
-    image: amssolution/desktopschedulingapigw:linux-v3.0.1-rc
+    image: amssolution/desktopschedulingapigw:linux-v3.1.0-rc
     containerName: desktopschedulingapigw
     ports:
       - "5200:8080"
@@ -124,7 +124,7 @@ services:
       startPeriod: 30s
 
   desktopprojectplanningcomposition:
-    image: amssolution/desktop.projectplanning.compositiongateway:linux-v3.0.1-rc
+    image: amssolution/desktop.projectplanning.compositiongateway:linux-v3.1.0-rc
     containerName: desktopprojectplanningcomposition
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080
@@ -147,7 +147,7 @@ services:
       startPeriod: 40s
 
   clienthub:
-    image: amssolution/itops.clienthub:linux-v3.0.1-rc
+    image: amssolution/itops.clienthub:linux-v3.1.0-rc
     containerName: clienthub
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080

@@ -6,7 +6,7 @@ metadata:
 
 services:
   planning-reporting-migrator:
-    image: amssolution/scheduling.reporting.migrator:linux-v3.0.1-rc
+    image: amssolution/scheduling.reporting.migrator:linux-v3.1.0-rc
     containerName: planning-reporting-migrator
     lifecycle: init
     environment:
@@ -16,7 +16,7 @@ services:
       - ams-project-backend
 
   planning-reporting-api:
-    image: amssolution/scheduling.reporting.api:linux-v3.0.1-rc
+    image: amssolution/scheduling.reporting.api:linux-v3.1.0-rc
     containerName: planning-reporting-api
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080
@@ -38,7 +38,7 @@ services:
       startPeriod: 40s
 
   planning-reporting-clienthub:
-    image: amssolution/scheduling.reporting.clienthub:linux-v3.0.1-rc
+    image: amssolution/scheduling.reporting.clienthub:linux-v3.1.0-rc
     containerName: planning-reporting-clienthub
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080

@@ -6,7 +6,7 @@ metadata:
 
 services:
   projectmanagement-migrator:
-    image: amssolution/projectmanagement.migrator:linux-v3.0.1-rc
+    image: amssolution/projectmanagement.migrator:linux-v3.1.0-rc
     containerName: projectmanagement-migrator
     lifecycle: init
     environment:
@@ -18,7 +18,7 @@ services:
       - ams-project-backend
 
   projectmanagement-api:
-    image: amssolution/projectmanagement.api:linux-v3.0.1-rc
+    image: amssolution/projectmanagement.api:linux-v3.1.0-rc
     containerName: projectmanagement-api
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080
@@ -51,7 +51,7 @@ services:
       startPeriod: 40s
 
   collaboration-api:
-    image: amssolution/collaboration.api:linux-v3.0.1-rc
+    image: amssolution/collaboration.api:linux-v3.1.0-rc
     containerName: collaboration-api
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080
@@ -73,7 +73,7 @@ services:
       startPeriod: 40s
 
   accounting-api:
-    image: amssolution/accounting.api:linux-v3.0.1-rc
+    image: amssolution/accounting.api:linux-v3.1.0-rc
     containerName: accounting-api
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080
@@ -103,7 +103,7 @@ services:
       startPeriod: 40s
 
   projectmanagement:
-    image: amssolution/projectmanagement:linux-v3.0.1-rc
+    image: amssolution/projectmanagement:linux-v3.1.0-rc
     containerName: projectmanagement
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080
@@ -130,7 +130,7 @@ services:
       startPeriod: 40s
 
   projectmanagement-readmodelgenerator:
-    image: amssolution/projectmanagement.readmodelgenerator:linux-v3.0.1-rc
+    image: amssolution/projectmanagement.readmodelgenerator:linux-v3.1.0-rc
     containerName: projectmanagement-readmodelgenerator
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080
@@ -156,7 +156,7 @@ services:
       startPeriod: 40s
 
   projectmanagement-erpdata:
-    image: amssolution/projectmanagement.erpdata:linux-v3.0.1-rc
+    image: amssolution/projectmanagement.erpdata:linux-v3.1.0-rc
     containerName: projectmanagement-erpdata
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080
@@ -183,7 +183,7 @@ services:
       startPeriod: 40s
 
   accounting-capacitydispatcher:
-    image: amssolution/accounting.resourcecapacitydispatcher:linux-v3.0.1-rc
+    image: amssolution/accounting.resourcecapacitydispatcher:linux-v3.1.0-rc
     containerName: accounting-capacitydispatcher
     environment:
       ConnectionStrings__ams: ${AMS_DB}
@@ -194,7 +194,7 @@ services:
     restart: unless-stopped
 
   accounting-integration:
-    image: amssolution/accounting.integration:linux-v3.0.1-rc
+    image: amssolution/accounting.integration:linux-v3.1.0-rc
     containerName: accounting-integration
     environment:
       ASPNETCORE_URLS: http://0.0.0.0:8080
@@ -219,7 +219,7 @@ services:
       startPeriod: 40s
 
   projectmanagement-web:
-    image: amssolution/projectmanagement-web:linux-v3.0.1-rc
+    image: amssolution/projectmanagement-web:linux-v3.1.0-rc
     containerName: projectmanagement-web
     environment:
       NODE_ENV: ${NODE_ENV}
@@ -236,7 +236,7 @@ services:
       startPeriod: 40s
 
   erprefs-web:
-    image: amssolution/erprefs-web:linux-v3.0.1-rc
+    image: amssolution/erprefs-web:linux-v3.1.0-rc
     containerName: erprefs-web
     environment:
       NODE_ENV: ${NODE_ENV}

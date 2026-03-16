@@ -6,7 +6,7 @@ metadata:
 
 services:
   analytics-web:
-    image: amssolution/analytics-web:linux-v3.0.1-rc
+    image: amssolution/analytics-web:linux-v3.1.0-rc
     containerName: analytics-web
     environment:
       NODE_ENV: ${NODE_ENV}
