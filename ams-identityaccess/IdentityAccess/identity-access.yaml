@@ -6,15 +6,6 @@ metadata:
   description: Identity Provider services (IdentityServer, AdminPortal, ClientHub, EmailSender)
 
 variables:
-  # IdentityAccess Database
-  IDENTITY_ACCESS_DB:
-    label: IdentityAccess Database Connection
-    description: SQL Server connection string for IdentityAccess
-    type: SqlServerConnectionString
-    required: true
-    group: Database
-
-
   # Email Settings
   MAIL_SERVER:
     label: Mail Server
@@ -107,8 +98,11 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://0.0.0.0:80
-      ConnectionStrings__IdentityAccess: ${IDENTITY_ACCESS_DB}
-      ConnectionStrings__ams: ${AMS_DB}
+      DB_SERVER: ${DB_SERVER}
+      DB_NAME: ${DB_NAME}
+      DB_PARAMS: ${DB_PARAMS}
+      DB_RUNTIME_USER: ${DB_RUNTIME_USER}
+      DB_RUNTIME_PASSWORD: ${DB_RUNTIME_PASSWORD}
       ServiceBusTimeToWaitBeforeTriggeringCircuitBreaker: ${SERVICE_BUS_TIME_TO_WAIT_BEFORE_TRIGGERING_CIRCUIT_BREAKER}
       ExitOnCriticalError: ${EXIT_ON_CRITICAL_ERROR}
       CultureCode: ${CULTURE_CODE}
@@ -138,8 +132,11 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://0.0.0.0:80
-      ConnectionStrings__IdentityAccess: ${IDENTITY_ACCESS_DB}
-      ConnectionStrings__ams: ${AMS_DB}
+      DB_SERVER: ${DB_SERVER}
+      DB_NAME: ${DB_NAME}
+      DB_PARAMS: ${DB_PARAMS}
+      DB_RUNTIME_USER: ${DB_RUNTIME_USER}
+      DB_RUNTIME_PASSWORD: ${DB_RUNTIME_PASSWORD}
       ServiceBusTimeToWaitBeforeTriggeringCircuitBreaker: ${SERVICE_BUS_TIME_TO_WAIT_BEFORE_TRIGGERING_CIRCUIT_BREAKER}
       ExitOnCriticalError: ${EXIT_ON_CRITICAL_ERROR}
       CultureCode: ${CULTURE_CODE}
@@ -161,8 +158,11 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://0.0.0.0:80
-      ConnectionStrings__IdentityAccess: ${IDENTITY_ACCESS_DB}
-      ConnectionStrings__ams: ${AMS_DB}
+      DB_SERVER: ${DB_SERVER}
+      DB_NAME: ${DB_NAME}
+      DB_PARAMS: ${DB_PARAMS}
+      DB_RUNTIME_USER: ${DB_RUNTIME_USER}
+      DB_RUNTIME_PASSWORD: ${DB_RUNTIME_PASSWORD}
       ServiceBusTimeToWaitBeforeTriggeringCircuitBreaker: ${SERVICE_BUS_TIME_TO_WAIT_BEFORE_TRIGGERING_CIRCUIT_BREAKER}
       ExitOnCriticalError: ${EXIT_ON_CRITICAL_ERROR}
       Serilog__LogstashUrl: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:8080
@@ -182,8 +182,11 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://0.0.0.0:80
-      ConnectionStrings__IdentityAccess: ${IDENTITY_ACCESS_DB}
-      ConnectionStrings__ams: ${AMS_DB}
+      DB_SERVER: ${DB_SERVER}
+      DB_NAME: ${DB_NAME}
+      DB_PARAMS: ${DB_PARAMS}
+      DB_RUNTIME_USER: ${DB_RUNTIME_USER}
+      DB_RUNTIME_PASSWORD: ${DB_RUNTIME_PASSWORD}
       ServiceBusTimeToWaitBeforeTriggeringCircuitBreaker: ${SERVICE_BUS_TIME_TO_WAIT_BEFORE_TRIGGERING_CIRCUIT_BREAKER}
       ExitOnCriticalError: ${EXIT_ON_CRITICAL_ERROR}
       CultureCode: ${CULTURE_CODE}
