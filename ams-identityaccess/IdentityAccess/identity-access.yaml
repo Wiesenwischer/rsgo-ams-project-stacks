@@ -84,8 +84,23 @@ variables:
 
 
 services:
+  identityaccess-migrator:
+    image: amssolution/identityaccess.migrator:linux-v3.1.0-rc
+    containerName: identityaccess-migrator
+    lifecycle: init
+    environment:
+      DB_SERVER: ${DB_SERVER}
+      DB_NAME: ${DB_NAME}
+      DB_PARAMS: ${DB_PARAMS}
+      DB_ADMIN_USER: ${DB_ADMIN_USER}
+      DB_ADMIN_PASSWORD: ${DB_ADMIN_PASSWORD}
+      DB_RUNTIME_USER: ${DB_RUNTIME_USER}
+      DB_RUNTIME_PASSWORD: ${DB_RUNTIME_PASSWORD}
+    networks:
+      - ams-project-identity
+
   identity-api:
-    image: amssolution/identityaccess.identityserver:linux-latest
+    image: amssolution/identityaccess.identityserver:linux-v3.1.0-rc
     containerName: identity-api
     ports:
       - "7614:80"
@@ -116,7 +131,7 @@ services:
       path: /hc
 
   adminportal:
-    image: amssolution/identityaccess.adminportal:linux-latest
+    image: amssolution/identityaccess.adminportal:linux-v3.1.0-rc
     containerName: adminportal
     ports:
       - "7615:80"
@@ -139,7 +154,7 @@ services:
       path: /hc
 
   identityaccess-clienthub:
-    image: amssolution/identityaccess.clienthub:linux-latest
+    image: amssolution/identityaccess.clienthub:linux-v3.1.0-rc
     containerName: identityaccess-clienthub
     ports:
       - "7616:80"
@@ -160,7 +175,7 @@ services:
       path: /hc
 
   identityaccess-emailsender:
-    image: amssolution/identityaccess.emailsender:linux-latest
+    image: amssolution/identityaccess.emailsender:linux-v3.1.0-rc
     containerName: identityaccess-emailsender
     ports:
       - "7617:80"
