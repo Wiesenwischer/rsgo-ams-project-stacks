@@ -24,11 +24,53 @@ sharedVariables:
     group: Network
 
   # Database Configuration
-  AMS_DB:
-    label: ams Database Connection
-    description: SQL Server connection string for ams database
-    type: SqlServerConnectionString
+  DB_SERVER:
+    label: DB Server
+    description: SQL Server hostname or IP address (e.g., mssql, sql01.firma.local)
+    type: String
     required: true
+    group: Database
+
+  DB_NAME:
+    label: DB Name
+    description: Database name (e.g., identity)
+    type: String
+    required: true
+    group: Database
+
+  DB_PARAMS:
+    label: DB Additional Parameters
+    description: Additional connection string parameters (e.g., Encrypt=false;TrustServerCertificate=true)
+    type: String
+    default: ""
+    group: Database
+
+  DB_ADMIN_USER:
+    label: DB Admin User
+    description: SQL Server admin login for DDL migrations
+    type: String
+    required: false
+    group: Database
+
+  DB_ADMIN_PASSWORD:
+    label: DB Admin Password
+    description: SQL Server admin password for DDL migrations
+    type: Password
+    required: false
+    group: Database
+
+  DB_RUNTIME_USER:
+    label: DB Runtime User
+    description: SQL Server runtime login (least-privilege, used by services)
+    type: String
+    required: false
+    group: Database
+
+  DB_RUNTIME_PASSWORD:
+    label: DB Runtime Password
+    description: SQL Server runtime password
+    type: Password
+    required: false
     group: Database
 
   # Environment Configuration
