@@ -42,7 +42,7 @@ sharedVariables:
     label: DB Additional Parameters
     description: Additional connection string parameters (e.g., Encrypt=false;TrustServerCertificate=true)
     type: String
-    default: ""
+    default: "Encrypt=false;TrustServerCertificate=true"
     group: Database
 
   DB_ADMIN_USER:
@@ -64,6 +64,7 @@ sharedVariables:
     label: DB Runtime User
     description: SQL Server runtime login (least-privilege, used by services)
     type: String
+    default: projectuser
     required: true
     group: Database
 
