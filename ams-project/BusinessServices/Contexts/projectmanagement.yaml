@@ -32,7 +32,6 @@ services:
       DB_PARAMS: ${DB_PARAMS}
       DB_RUNTIME_USER: ${DB_RUNTIME_USER}
       DB_RUNTIME_PASSWORD: ${DB_RUNTIME_PASSWORD}
-      ConnectionStrings__ProjectManagement: "Data Source=${DB_SERVER};Initial Catalog=${DB_NAME};User ID=${DB_RUNTIME_USER};Password=${DB_RUNTIME_PASSWORD};${DB_PARAMS}"
       ConnectionStrings__cache: ${REDIS_CONNECTION}
       ConnectionStrings__EventStore: ${EVENTSTORE_TCP}
       ServiceBusTimeToWaitBeforeTriggeringCircuitBreaker: ${SERVICE_BUS_TIME_TO_WAIT_BEFORE_TRIGGERING_CIRCUIT_BREAKER}
