@@ -60,9 +60,9 @@ services:
     restart: unless-stopped
     healthCheck:
       type: http
-      path: /hc
+      path: /export/hc
       port: 3000
-      test: ["CMD", "curl", "-f", "http://localhost:3000/hc"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/export/hc"]
       interval: 30s
       timeout: 10s
       retries: 3

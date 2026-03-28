@@ -10,6 +10,8 @@ services:
     containerName: analytics-web
     environment:
       NODE_ENV: ${NODE_ENV}
+      HOSTNAME: "0.0.0.0"
+      BASE_PATH: /analytics
       NEXT_PUBLIC_API_BASE_URL: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${BFF_PORT}
       BFF_INTERNAL_URL: http://web-bff:8080
     networks:

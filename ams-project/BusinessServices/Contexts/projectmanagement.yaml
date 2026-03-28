@@ -261,6 +261,7 @@ services:
     environment:
       NODE_ENV: ${NODE_ENV}
       HOSTNAME: "0.0.0.0"
+      BASE_PATH: /projectmanagement
       NEXT_PUBLIC_API_BASE_URL: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${BFF_PORT}
       API_BASE_URL: http://projectmanagement-api:8080
     networks:
@@ -281,6 +282,7 @@ services:
     environment:
       NODE_ENV: ${NODE_ENV}
       HOSTNAME: "0.0.0.0"
+      BASE_PATH: /erprefs
       NEXT_PUBLIC_API_BASE_URL: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${BFF_PORT}
     networks:
       - ams-project-backend
