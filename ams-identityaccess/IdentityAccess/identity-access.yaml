@@ -80,6 +80,15 @@ services:
       DB_RUNTIME_USER: ${DB_RUNTIME_USER}
       DB_RUNTIME_PASSWORD: ${DB_RUNTIME_PASSWORD}
       DB_TRANSPORT_NAME: ${DB_TRANSPORT_NAME}
+      # Client URL seeding — the ConfigurationDbContextSeed in this migrator
+      # reads ClientUrls from IConfiguration and writes the resulting redirect
+      # URIs into IdentityAccess.ClientRedirectUris. These MUST live on the
+      # migrator service, not on identity-api, because the IdentityServer
+      # runtime does not re-seed clients at start.
+      ClientUrls__ProjectDesktop: http://localhost/wpf
+      ClientUrls__ProjectDesktopV2: http://localhost/wpf
+      ClientUrls__WebBffBaseUrls__0: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:5000
+      ClientUrls__ReactClientBaseUrls__0: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:5000
     networks:
       - ams-project-identity
 
@@ -105,10 +114,6 @@ services:
       CertificatePath: /etc/ssl/certs/identity-api.pfx
       CertificatePassword: P@ssw0rd!
       DB_TRANSPORT_NAME: ${DB_TRANSPORT_NAME}
-      ClientUrls__ProjectDesktop: http://localhost/wpf
-      ClientUrls__ProjectDesktopV2: http://localhost/wpf
-      ClientUrls__WebBffBaseUrls__0: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:5000
-      ClientUrls__ReactClientBaseUrls__0: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:5000
     volumes:
       - profilePictures:/app/wwwroot/picture
     networks:
