@@ -1,0 +1,69 @@
+# TaskContext Context Fragment
+
+metadata:
+  name: TaskContext
+  description: TaskContext bounded context services (PLAN-039 / PLAN-041 — task-details web)
+
+services:
+  taskcontext-migrator:
+    image: amssolution/taskcontext.migrator:linux-v3.1.0-rc
+    containerName: taskcontext-migrator
+    lifecycle: init
+    environment:
+      ConnectionStrings__Persistence: ${AMS_DB}
+      ConnectionStrings__Transport: ${AMS_DB}
+      DB_ADMIN_USER: ${DB_ADMIN_USER}
+      DB_ADMIN_PASSWORD: ${DB_ADMIN_PASSWORD}
+      DB_RUNTIME_USER: ${DB_RUNTIME_USER}
+      DB_RUNTIME_PASSWORD: ${DB_RUNTIME_PASSWORD}
+    networks:
+      - ams-project-backend
+
+  taskcontext-api:
+    image: amssolution/taskcontext.api:linux-v3.1.0-rc
+    containerName: taskcontext-api
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ConnectionStrings__TaskContext: ${AMS_DB}
+      ConnectionStrings__Transport: ${AMS_DB}
+      ConnectionStrings__Persistence: ${AMS_DB}
+      Serilog__MinimumLevel: ${LOG_LEVEL}
+    networks:
+      - ams-project-backend
+    restart: unless-stopped
+    healthCheck:
+      type: http
+      path: /hc
+      port: 8080
+      test: ["CMD", "curl", "-f", "http://localhost:8080/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
+  taskcontext-web:
+    image: amssolution/taskcontext-web:linux-v3.1.0-rc
+    containerName: taskcontext-web
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      NEXT_PUBLIC_API_BASE_URL: http://${AMS_PROJECT_EXTERNAL_DNS_NAME_OR_IP}:${BFF_PORT}
+      API_BASE_URL: http://taskcontext-api:8080
+    networks:
+      - ams-project-backend
+    restart: unless-stopped
+    healthCheck:
+      type: http
+      path: /taskcontext/hc
+      port: 3000
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/taskcontext/hc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      startPeriod: 40s
+
+
+networks:
+  ams-project-backend:
+    external: true

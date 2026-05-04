@@ -245,6 +245,8 @@ stacks:
     include: BusinessServices/Contexts/publicapi.yaml
   analytics:
     include: BusinessServices/Contexts/analytics.yaml
+  taskcontext:
+    include: BusinessServices/Contexts/taskcontext.yaml
 
 networks:
   ams-project-backend:
